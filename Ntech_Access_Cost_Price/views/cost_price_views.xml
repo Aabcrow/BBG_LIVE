@@ -56,12 +56,12 @@
             <field name="arch" type="xml">
                 
                 <xpath expr="//button[@name='action_update_quantity_on_hand']" position="replace">
-                    <button string="Update Quantity" type="object" groups="Ntech_Access_Cost_Price.group_access_cost_price" name="action_update_quantity_on_hand" attrs="{'invisible': [('type', '!=', 'product')]}"/>
+                    <button string="Update Quantity" type="object" groups="Ntech_Access_Cost_Price.group_access_update_qty" name="action_update_quantity_on_hand" attrs="{'invisible': [('type', '!=', 'product')]}"/>
                        
                 </xpath>
                 
                 <xpath expr="//button[@name='action_open_quants']" position="replace">
-                    <button type="object" name="action_open_quants" groups="Ntech_Access_Cost_Price.group_access_cost_price" attrs="{'invisible':[('show_on_hand_qty_status_button', '=', False)]}" class="oe_stat_button" icon="fa-cubes">
+                    <button type="object" name="action_open_quants" groups="Ntech_Access_Cost_Price.group_access_update_qty" attrs="{'invisible':[('show_on_hand_qty_status_button', '=', False)]}" class="oe_stat_button" icon="fa-cubes">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value" widget="statinfo">
                                     <field name="qty_available" widget="statinfo" nolabel="1" class="mr4"/>
