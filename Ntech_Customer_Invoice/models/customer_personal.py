@@ -4,7 +4,7 @@ import base64
 from random import choice
 from string import digits
 import itertools
-from werkzeug import url_encode
+#from werkzeug import url_encode
 import pytz
 from collections import defaultdict
 
