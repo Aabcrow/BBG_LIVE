@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_access_on_hand_qty" model="res.groups">
+        <field name="name">Access OnHand Qty</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="stock_product_template_form_inherit" model="ir.ui.view">
+        <field name="name">stock.product.template.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_stock_product_template_tree"/>
+        <field name="arch" type="xml">
+            <field name="qty_available" position="attributes">
+                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>
+            </field>
+        </field>
+    </record>
+    <record id="product_template_update_quantity" model="ir.ui.view">
+        <field name="name">product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_update_quantity_on_hand']" position="attributes">
+                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_open_quants']" position="attributes">
+                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="stock_product_template_kanban_view_inherit" model="ir.ui.view">
+        <field name="name">stock_product_template_kanban_view_inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_kanban_stock_view"/>
+        <field name="arch" type="xml">
+            <div t-if="record.type.raw_value == 'product'" position="attributes">
+                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>
+            </div>
+        </field>
+    </record>
+
+
+</odoo>
+
+
