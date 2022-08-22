@@ -34,6 +34,8 @@
         'base', 'hr_payroll', 'hr', 'account', 'ohrms_loan',
     ],
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/hr_loan_config.xml',
         'views/hr_loan_acc.xml',
     ],

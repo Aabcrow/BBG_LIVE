@@ -3,13 +3,16 @@ import time
 from odoo import models, api, fields
 from odoo.exceptions import UserError, ValidationError
 
+
 class loan_payments(models.Model):
-	_name = 'loan.payments'
-	
-	name = fields.Char(string="Name", required=True, help='Payment name')
-	debit_account_id = fields.Many2one('account.account', string="Debit Account", required=True, help='Debit account for journal entry')
-	credit_account_id = fields.Many2one('account.account', string="Credit Account", required=True, help='Credit account for journal entry')
-	journal_id = fields.Many2one('account.journal', string="Journal", required=True, help='Journal for journal entry')
+    _name = 'loan.payments'
+
+    name = fields.Char(string="Name", required=True, help='Payment name')
+    debit_account_id = fields.Many2one('account.account', string="Debit Account", required=True,
+                                       help='Debit account for journal entry')
+    credit_account_id = fields.Many2one('account.account', string="Credit Account", required=True,
+                                        help='Credit account for journal entry')
+    journal_id = fields.Many2one('account.journal', string="Journal", required=True, help='Journal for journal entry')
 
 
 loan_payments()
@@ -26,6 +29,7 @@ class HrLoanAcc(models.Model):
         ('draft', 'Draft'),
         ('waiting_approval_1', 'Submitted'),
         ('waiting_approval_2', 'Waiting Approval'),
+        ('approve1', 'First Approval'),
         ('approve', 'Approved'),
         ('reschedule', 'Reschedule'),
         ('refuse', 'Refused'),
@@ -35,16 +39,16 @@ class HrLoanAcc(models.Model):
     def action_approve(self):
         """This create account move for request.
             """
-        #loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
+        # loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
         contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)])
         if not contract_obj:
             raise UserError('You must Define a contract for employee')
         if not self.loan_lines:
             raise UserError('You must compute installment before Approved')
-        
-        #if loan_approve:
-            #self.write({'state': 'waiting_approval_2'})
-        #else:
+
+        # if loan_approve:
+        # self.write({'state': 'waiting_approval_2'})
+        # else:
         if not self.pay_method.debit_account_id or not self.pay_method.credit_account_id or not self.pay_method.journal_id:
             raise UserError("You must enter Payment Method Credit account & Debit account and journal to approve ")
         if not self.loan_lines:
@@ -104,7 +108,7 @@ class HrLoanAcc(models.Model):
             lines_amount = sum(record.loan_lines.mapped('amount'))
             for tab in record.loan_lines:
                 current_date = fields.Date.today()
-                #print('TTTTTTTTTTTTTTTTTTTTTT',current_date)
+                # print('TTTTTTTTTTTTTTTTTTTTTT',current_date)
                 if tab.amount < 0.0:
                     raise ValidationError('One of the Installment Amount is in Minus Value')
                 if tab.paid == False:
@@ -170,10 +174,9 @@ class HrLoanAcc(models.Model):
 
 class HrLoanLineAcc(models.Model):
     _inherit = "hr.loan.line"
-    
-    pay_type = fields.Selection([('deductsalary', 'Salary Deduct'),('paycash', 'Cash Pay')], default='deductsalary', string="Type", readonly=True)
-    
-    
+
+    pay_type = fields.Selection([('deductsalary', 'Salary Deduct'), ('paycash', 'Cash Pay')], default='deductsalary',
+                                string="Type", readonly=True)
 
     def action_paid_amount(self):
         """This create the account move line for payment of each installment.
@@ -188,7 +191,7 @@ class HrLoanLineAcc(models.Model):
             journal_id = line.loan_id.pay_method.journal_id.id
             debit_account_id = line.loan_id.pay_method.credit_account_id.id
             credit_account_id = line.loan_id.pay_method.debit_account_id.id
-            
+
             debit_vals = {
                 'name': loan_name,
                 'account_id': debit_account_id,
@@ -219,7 +222,6 @@ class HrLoanLineAcc(models.Model):
         return True
 
 
-
 class HrPayslipAcc(models.Model):
     _inherit = 'hr.payslip'
 
@@ -229,7 +231,7 @@ class HrPayslipAcc(models.Model):
             if line.loan_line_ids:
                 line.loan_line_ids.action_paid_amount()
         return super(HrPayslipAcc, self).action_payslip_done()'''
-        
+
     '''def action_payslip_done(self):
         print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
         #self.compute_sheet()
