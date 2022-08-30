@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Access cost price - MODULE',
+    'version': '1.0.0',
+    'category': 'Hidden',
+    'author': 'Abderrahmane Guessoum - Alpha Brains Technologies',
+    'website': 'www.fiverr.com/aabcrow',
+    'depends': [
+        'product',
+        'sale',
+    ],
+    'data': [
+        # 'data/data.xml',
+        'security/security.xml',
+        'views/product_views.xml',
+    ],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+    'license': 'LGPL-3',
+}
