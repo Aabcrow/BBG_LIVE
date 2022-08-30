@@ -18,23 +18,24 @@
             </field>
         </record>
 
-    <record id="view_order_form_analytic_required" model="ir.ui.view">
-            <field name="name">sale.order.inherit.form</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form" />
-            <field name="arch" type="xml">
-                
+<!--    <record id="view_order_form_analytic_required" model="ir.ui.view">-->
+<!--            <field name="name">sale.order.inherit.form</field>-->
+<!--            <field name="model">sale.order</field>-->
+<!--            <field name="inherit_id" ref="sale.view_order_form" />-->
+<!--            <field name="arch" type="xml">-->
+<!--                -->
 
-                <xpath expr="//group[@name='sale_info']/field[@name='analytic_account_id']" position="replace">
-                    <field name="analytic_account_id" invisible="1"/>          
-                </xpath>
-                
-                <field name="payment_term_id" position="after">
-                    <field name="analytic_account_id" context="{'default_partner_id':partner_invoice_id, 'default_name':name}" attrs="{'readonly': [('invoice_count','!=',0),('state','=','sale')]}" groups="analytic.group_analytic_accounting" force_save="1"/>
-                </field>
+<!--                <xpath expr="//group[@name='sale_info']/field[@name='analytic_account_id']" position="replace">-->
+<!--                    <field name="analytic_account_id" invisible="1"/>          -->
+<!--                </xpath>-->
+<!--                -->
+<!--                <field name="payment_term_id" position="after">-->
 
-            </field>
-        </record>
+<!--                    <field name="analytic_account_id" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}" context="{'default_partner_id':partner_invoice_id, 'default_name':name}" attrs="{'readonly': [('invoice_count','!=',0),('state','=','sale')]}" groups="analytic.group_analytic_accounting" force_save="1"/>-->
+<!--                </field>-->
+
+<!--            </field>-->
+<!--        </record>-->
 
 
 </odoo>
