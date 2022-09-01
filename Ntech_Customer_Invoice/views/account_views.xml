@@ -16,6 +16,11 @@
                     account.group_account_invoice,Ntech_Customer_Invoice.group_account_invoice_personal
                 </attribute>
             </xpath>
+            <button name="action_register_payment" position="attributes">
+                <attribute name="groups">
+                    account.group_account_invoice,Ntech_Customer_Invoice.group_account_invoice_personal
+                </attribute>
+            </button>
             <button name="button_cancel" position="attributes">
                 <attribute name="groups">Ntech_Customer_Invoice.group_cancel_invoice</attribute>
             </button>
