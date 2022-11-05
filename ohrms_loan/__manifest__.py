@@ -42,6 +42,7 @@
         'views/hr_payroll.xml',
         'views/loan_print_report.xml',
         'views/report_loan_print.xml',
+        'wizard/refuse_loan_wizard_views.xml',
     ],
     'demo': [],
     'images': ['static/description/banner.jpg'],

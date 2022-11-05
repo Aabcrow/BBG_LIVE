@@ -89,10 +89,11 @@ class HrPayslip(models.Model):
 
     def action_payslip_done(self):
         res = super(HrPayslip, self).action_payslip_done()
-        lon_obj = self.env['hr.loan'].search([('employee_id', '=', self.employee_id.id), ('state', '=', 'approve')])
-        loan_line_ids = self.env['hr.loan.line'].search([('loan_id', 'in', lon_obj.ids), 
-                        ('date', '>=', self.date_from.strftime(DEFAULT_SERVER_DATE_FORMAT)), 
-                        ('date', '<=', self.date_to.strftime(DEFAULT_SERVER_DATE_FORMAT)), 
-                        ('paid', '=', False)])
-        loan_line_ids.write({'paid': True})
+        for slip in self:
+            lon_obj = self.env['hr.loan'].search([('employee_id', '=', slip.employee_id.id), ('state', '=', 'approve')])
+            loan_line_ids = self.env['hr.loan.line'].search([('loan_id', 'in', lon_obj.ids),
+                            ('date', '>=', slip.date_from.strftime(DEFAULT_SERVER_DATE_FORMAT)),
+                            ('date', '<=', slip.date_to.strftime(DEFAULT_SERVER_DATE_FORMAT)),
+                            ('paid', '=', False)])
+            loan_line_ids.write({'paid': True})
         return res

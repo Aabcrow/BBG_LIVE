@@ -19,7 +19,7 @@ class HrLoan(models.Model):
         for loan in self:
             total_paid = 0.0
             total_amt = 0.0
-            loan_ids = self.env['hr.loan'].search([('employee_id', '=', self.id), ('state', '=', 'approve')])
+            loan_ids = self.env['hr.loan'].search([('employee_id', '=', loan.id), ('state', '=', 'approve')])
             remaining_loans_lines = loan_ids.mapped('loan_lines').filtered(lambda l: l.paid is False)
             global_balance = sum(remaining_loans_lines.mapped('amount'))
             for line in loan.loan_lines:
@@ -96,7 +96,12 @@ class HrLoan(models.Model):
         string="User",
         default=lambda self: self.env.user
     )
-
+    refuse_reason = fields.Text(
+        'Refusal Reason'
+    )
+    date_refuse = fields.Datetime(
+        'Refusal Datetime'
+    )
     def _get_journal_count(self):
         for record in self:
             record.loan_journal_count = self.env['account.move'].search_count([('ref', '=', record.name)])
@@ -202,7 +207,13 @@ class HrLoan(models.Model):
         return True
 
     def action_refuse(self):
-        return self.write({'state': 'refuse'})
+        return {
+            'name': _('Refuse Reason'),
+            'res_model': 'refuse.loan.wizard',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'view_mode': 'form',
+        }
 
     def action_submit(self):
         for record in self:
