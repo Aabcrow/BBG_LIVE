@@ -34,6 +34,7 @@ class PayslipRunXlsxReport(models.AbstractModel):
             })
             sheet.set_column('A:A', 5)
             sheet.set_column('B:M', 20)
+            sheet.set_column('D:D', 28)
 
             sheet.write(0, 0, 'رقم', bold_gray)
             sheet.write(0, 1, 'هوية المستفيد', bold_blue)
@@ -51,6 +52,7 @@ class PayslipRunXlsxReport(models.AbstractModel):
             line_index = 1
             col_index = 0
             totals = 0
+            total_net = 0
             total_wage = 0
             total_all_housing = 0
             total_other = 0
@@ -61,12 +63,16 @@ class PayslipRunXlsxReport(models.AbstractModel):
                     line.line_ids.filtered(lambda l: l.salary_rule_id.code == 'HOUALLOW').mapped('total')) + sum(
                     line.line_ids.filtered(lambda l: l.salary_rule_id.code == 'Other').mapped('total')) - sum(
                     line.line_ids.filtered(lambda l: l.category_id.code == 'DED').mapped('total'))
+                net = sum(line.line_ids.filtered(lambda l: l.category_id.code == 'NET').mapped('total'))
+                acc_number = ''
+                if line.employee_id.bank_account_id.acc_number:
+                    acc_number = line.employee_id.bank_account_id.acc_number.replace(' ', '')
                 sheet.write(line_index, col_index, line_index, bold_gray)
                 sheet.write(line_index, col_index + 1, line.employee_id.identification_id, bold_blue)
                 sheet.write(line_index, col_index + 2, '{}'.format(line.employee_id.name), bold_gray)
-                sheet.write(line_index, col_index + 3, line.employee_id.bank_account_id.acc_number, bold_blue)
+                sheet.write(line_index, col_index + 3, acc_number, bold_blue)
                 sheet.write(line_index, col_index + 4, line.employee_id.bank_account_id.bank_id.bic, bold_blue)
-                sheet.write(line_index, col_index + 5, total, bold_blue)
+                sheet.write(line_index, col_index + 5, net, bold_blue)
                 # sheet.write(line_index, col_index + 6, line.contract_id.wage, bold_gray)
                 sheet.write(line_index, col_index + 6,
                             sum(line.line_ids.filtered(lambda l: l.category_id.code == 'BASIC').mapped('total')),
@@ -85,10 +91,15 @@ class PayslipRunXlsxReport(models.AbstractModel):
                 sheet.write(line_index, col_index + 12,
                             'Active' if line.employee_id.contract_id.state == "open" else 'Not Active', bold_blue)
                 totals = totals + total
-                total_wage = total_wage + sum(line.line_ids.filtered(lambda l: l.category_id.code == 'BASIC').mapped('total'))
-                total_all_housing = total_all_housing + sum(line.line_ids.filtered(lambda l: l.salary_rule_id.code == 'HOUALLOW').mapped('total'))
-                total_other = total_other + sum(line.line_ids.filtered(lambda l: l.salary_rule_id.code == 'Other').mapped('total'))
-                total_ded = total_ded + sum(line.line_ids.filtered(lambda l: l.category_id.code == 'DED').mapped('total'))
+                total_net = total_net + net
+                total_wage = total_wage + sum(
+                    line.line_ids.filtered(lambda l: l.category_id.code == 'BASIC').mapped('total'))
+                total_all_housing = total_all_housing + sum(
+                    line.line_ids.filtered(lambda l: l.salary_rule_id.code == 'HOUALLOW').mapped('total'))
+                total_other = total_other + sum(
+                    line.line_ids.filtered(lambda l: l.salary_rule_id.code == 'Other').mapped('total'))
+                total_ded = total_ded + sum(
+                    line.line_ids.filtered(lambda l: l.category_id.code == 'DED').mapped('total'))
                 col_index = 0
                 line_index += 1
             sheet.write(line_index, 0, '', bold_gray)
@@ -96,7 +107,7 @@ class PayslipRunXlsxReport(models.AbstractModel):
             sheet.write(line_index, 2, ' Total - الاجمالي', bold_gray)
             sheet.write(line_index, 3, '', bold_gray)
             sheet.write(line_index, 4, '', bold_gray)
-            sheet.write(line_index, 5, totals, bold_blue)
+            sheet.write(line_index, 5, total_net, bold_blue)
             sheet.write(line_index, 6, total_wage, bold_gray)
             sheet.write(line_index, 7, total_all_housing, bold_gray)
             sheet.write(line_index, 8, total_other, bold_gray)

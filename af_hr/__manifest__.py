@@ -19,6 +19,7 @@
         'views/hr_contract_views.xml',
         'views/hr_leave_views.xml',
         'views/regenerate_work_entries_view.xml',
+        'views/hr_monthly_accrual.xml',
         'report/hr_employee_info_report.xml',
         'report/hr_employee_info_template.xml',
         'report/hr_payslip_run_template.xml',

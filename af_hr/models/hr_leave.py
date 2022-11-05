@@ -4,7 +4,7 @@ from odoo import api, fields, models, _
 import logging
 
 from datetime import datetime
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -20,6 +20,16 @@ class HrLeaveAllocation(models.Model):
             employee_ids = user_employee.child_ids.ids + [user_employee.id]
             res['domain'] = {'employee_id': [('id', 'in', employee_ids)]}
         return res
+
+    # def _end_of_year_accrual(self):
+    #     # to override in payroll
+    #     first_day_this_year = fields.Date.today() + relativedelta(month=1, day=1)
+    #     for allocation in self:
+    #         current_level = allocation._get_current_accrual_plan_level_id(first_day_this_year)[0]
+    #         nextcall = current_level._get_next_date(first_day_this_year)
+    #         if current_level and current_level.action_with_unused_accruals == 'lost':
+    #             # Allocations are lost but number_of_days should not be lower than leaves_taken
+    #             allocation.write({'number_of_days': allocation.leaves_taken, 'lastcall': first_day_this_year, 'nextcall': nextcall})
 
 
 class HrLeave(models.Model):
