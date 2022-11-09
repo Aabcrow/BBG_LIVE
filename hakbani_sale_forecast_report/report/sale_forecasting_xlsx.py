@@ -105,8 +105,8 @@ class SaleForecast(models.AbstractModel):
 
         sale_records = self.env['sale.order.line'].search([
             ('state', '=', 'sale'),
-            ('create_date', '>=', start_date),
-            ('create_date', '<=', end_date),
+            ('order_id.date_order', '>=', start_date),
+            ('order_id.date_order', '<=', end_date),
         ])
 
         worksheet = workbook.add_worksheet('Sale Forecast Report')
@@ -147,11 +147,13 @@ class SaleForecast(models.AbstractModel):
             sale_qty = self.env['sale.order.line'].search([
                 ('state', '=', 'sale'),
                 ('product_id', '=', prod),
-                ('create_date', '>=', start_date),
-                ('create_date', '<=', end_date),
+                ('order_id.date_order', '>=', start_date),
+                ('order_id.date_order', '<=', end_date),
             ])
             sale_quant = 0.0
+            count = 0
             for sale in sale_qty:
+                count += 1
                 sale_quant += sale.product_uom_qty
             pur_qty = 0.0
             if purchase_qty:
@@ -161,9 +163,11 @@ class SaleForecast(models.AbstractModel):
                 ('id', '=', prod),
             ])
 
-            total = product_rec.virtual_available + sale_quant
-            average = total/int(wizard_data.avg_period)
+            total = product_rec.virtual_available + pur_qty
+            average = sale_quant/int(wizard_data.avg_period)
             new_value = total - average
+
+            # print(2222222222222222222222222222222222222222222, product_rec.name, product_rec.virtual_available, pur_qty, sale_quant, total, count)
 
             worksheet.write_string(row, col, product_rec.name or '', format_data_left)
             worksheet.write_number(row, col+1, product_rec.virtual_available, format_data_right)
