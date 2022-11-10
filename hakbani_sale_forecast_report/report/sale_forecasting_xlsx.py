@@ -111,25 +111,26 @@ class SaleForecast(models.AbstractModel):
 
         worksheet = workbook.add_worksheet('Sale Forecast Report')
 
-        worksheet.set_column('A:A', 25)
-        worksheet.set_column('B:K', 12)
+        worksheet.set_column('A:B', 25)
+        worksheet.set_column('C:L', 12)
 
-        worksheet.merge_range('A2:K3', 'Plan Sale Forecast Report', main_merge_format)
+        worksheet.merge_range('A2:L3', 'Plan Sale Forecast Report', main_merge_format)
 
         row = 5
         col = 0
 
         worksheet.write_string(row, col, 'Item', format_data_header)
-        worksheet.write_string(row, col+1, 'Qty Available', format_data_header)
-        worksheet.write_string(row, col+2, 'Qty To Way', format_data_header)
-        worksheet.write_string(row, col+3, 'Total', format_data_header)
-        worksheet.write_string(row, col+4, 'Average', format_data_header)
-        worksheet.write_string(row, col+5, '1 Month', format_data_header)
-        worksheet.write_string(row, col+6, '2 Month', format_data_header)
-        worksheet.write_string(row, col+7, '3 Month', format_data_header)
-        worksheet.write_string(row, col+8, '4 Month', format_data_header)
-        worksheet.write_string(row, col+9, '5 Month', format_data_header)
-        worksheet.write_string(row, col+10, '6 Month', format_data_header)
+        worksheet.write_string(row, col+1, 'Category', format_data_header)
+        worksheet.write_string(row, col+2, 'Qty Available', format_data_header)
+        worksheet.write_string(row, col+3, 'Qty To Way', format_data_header)
+        worksheet.write_string(row, col+4, 'Total', format_data_header)
+        worksheet.write_string(row, col+5, 'Average', format_data_header)
+        worksheet.write_string(row, col+6, '1 Month', format_data_header)
+        worksheet.write_string(row, col+7, '2 Month', format_data_header)
+        worksheet.write_string(row, col+8, '3 Month', format_data_header)
+        worksheet.write_string(row, col+9, '4 Month', format_data_header)
+        worksheet.write_string(row, col+10, '5 Month', format_data_header)
+        worksheet.write_string(row, col+11, '6 Month', format_data_header)
 
         row += 1
 
@@ -140,9 +141,8 @@ class SaleForecast(models.AbstractModel):
 
         for prod in prod_list:
             purchase_qty = self.env['purchase.order.line'].search([
-                ('state', '=', 'draft'),
+                ('state', 'in', ['draft', 'purchase']),
                 ('product_id', '=', prod),
-                ('order_id.picking_ids', '=', False),
             ])
             sale_qty = self.env['sale.order.line'].search([
                 ('state', '=', 'sale'),
@@ -158,7 +158,14 @@ class SaleForecast(models.AbstractModel):
             pur_qty = 0.0
             if purchase_qty:
                 for rec in purchase_qty:
-                    pur_qty += rec.product_qty
+                    if rec.order_id.state == 'purchase':
+                        for pick in rec.order_id.picking_ids:
+                            if pick.state == 'assigned':
+                                for line in pick.move_ids_without_package:
+                                    if line.product_id.id == rec.product_id.id:
+                                        pur_qty += line.product_uom_qty
+                    if rec.state == 'draft':
+                        pur_qty += rec.product_qty
             product_rec = self.env['product.product'].search([
                 ('id', '=', prod),
             ])
@@ -170,37 +177,38 @@ class SaleForecast(models.AbstractModel):
             # print(2222222222222222222222222222222222222222222, product_rec.name, product_rec.virtual_available, pur_qty, sale_quant, total, count)
 
             worksheet.write_string(row, col, product_rec.name or '', format_data_left)
-            worksheet.write_number(row, col+1, product_rec.virtual_available, format_data_right)
-            worksheet.write_number(row, col+2, pur_qty, format_data_right)
-            worksheet.write_number(row, col+3, total, format_data_right)
-            worksheet.write_number(row, col+4, average, format_data_right)
-            if new_value < 0:
-                worksheet.write_number(row, col+5, new_value, format_data_right_red)
-            else:
-                worksheet.write_number(row, col + 5, new_value, format_data_right)
-            new_value -= average
+            worksheet.write_string(row, col+1, product_rec.categ_id.name or '', format_data_left)
+            worksheet.write_number(row, col+2, product_rec.virtual_available, format_data_right)
+            worksheet.write_number(row, col+3, pur_qty, format_data_right)
+            worksheet.write_number(row, col+4, total, format_data_right)
+            worksheet.write_number(row, col+5, average, format_data_right)
             if new_value < 0:
                 worksheet.write_number(row, col+6, new_value, format_data_right_red)
             else:
-                worksheet.write_number(row, col + 6, new_value, format_data_right)
+                worksheet.write_number(row, col+6, new_value, format_data_right)
             new_value -= average
             if new_value < 0:
                 worksheet.write_number(row, col+7, new_value, format_data_right_red)
             else:
-                worksheet.write_number(row, col + 7, new_value, format_data_right)
+                worksheet.write_number(row, col+7, new_value, format_data_right)
             new_value -= average
             if new_value < 0:
                 worksheet.write_number(row, col+8, new_value, format_data_right_red)
             else:
-                worksheet.write_number(row, col + 8, new_value, format_data_right)
+                worksheet.write_number(row, col+8, new_value, format_data_right)
             new_value -= average
             if new_value < 0:
                 worksheet.write_number(row, col+9, new_value, format_data_right_red)
             else:
-                worksheet.write_number(row, col + 9, new_value, format_data_right)
+                worksheet.write_number(row, col+9, new_value, format_data_right)
             new_value -= average
             if new_value < 0:
                 worksheet.write_number(row, col+10, new_value, format_data_right_red)
             else:
-                worksheet.write_number(row, col + 10, new_value, format_data_right)
+                worksheet.write_number(row, col+10, new_value, format_data_right)
+            new_value -= average
+            if new_value < 0:
+                worksheet.write_number(row, col+11, new_value, format_data_right_red)
+            else:
+                worksheet.write_number(row, col+11, new_value, format_data_right)
             row += 1
