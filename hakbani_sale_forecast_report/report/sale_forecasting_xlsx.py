@@ -97,10 +97,10 @@ class SaleForecast(models.AbstractModel):
         })
 
         today_date = datetime.today()
-        end_month = (today_date - relativedelta(months=1)).month
-        res = calendar.monthrange(today_date.year, end_month)
+        end = (today_date - relativedelta(months=1))
+        res = calendar.monthrange(end.year, end.month)
         day = res[1]
-        end_date = datetime(today_date.year, end_month, day, 23, 59, 59)
+        end_date = datetime(end.year, end.month, day, 23, 59, 59)
         past_date = end_date - relativedelta(months=int(wizard_data.avg_period))
         start_date = datetime(past_date.year, past_date.month, 1)
 
