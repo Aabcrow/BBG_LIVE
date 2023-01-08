@@ -1,5 +1,6 @@
 from datetime import timedelta
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from odoo import models
 import calendar
 
@@ -96,12 +97,12 @@ class SaleForecast(models.AbstractModel):
         })
 
         today_date = datetime.today()
-        start_month = today_date.month - int(wizard_data.avg_period)
-        end_month = today_date.month - 1
-        start_date = datetime(today_date.year, start_month, 1)
+        end_month = (today_date - relativedelta(months=1)).month
         res = calendar.monthrange(today_date.year, end_month)
         day = res[1]
         end_date = datetime(today_date.year, end_month, day, 23, 59, 59)
+        past_date = end_date - relativedelta(months=int(wizard_data.avg_period))
+        start_date = datetime(past_date.year, past_date.month, 1)
 
         sale_records = self.env['sale.order.line'].search([
             ('state', '=', 'sale'),
