@@ -154,8 +154,10 @@ class SaleForecast(models.AbstractModel):
             sale_quant = 0.0
             count = 0
             for sale in sale_qty:
-                count += 1
-                sale_quant += sale.product_uom_qty
+                if sale.qty_invoiced:
+                    # print(22222222222222222222222222222222222222222222222222222222222222222, sale.order_id, sale.qty_invoiced)
+                    count += 1
+                    sale_quant += sale.qty_invoiced
             pur_qty = 0.0
             if purchase_qty:
                 for rec in purchase_qty:
@@ -174,6 +176,8 @@ class SaleForecast(models.AbstractModel):
             total = product_rec.virtual_available + pur_qty
             average = sale_quant/int(wizard_data.avg_period)
             new_value = total - average
+
+            # print(111111111111111111111111111111111111111111111, product_rec.name, start_date, end_date, sale_quant, int(wizard_data.avg_period), average, count)
 
             # print(2222222222222222222222222222222222222222222, product_rec.name, product_rec.virtual_available, pur_qty, sale_quant, total, count)
 
