@@ -101,7 +101,7 @@ class SaleForecast(models.AbstractModel):
         res = calendar.monthrange(end.year, end.month)
         day = res[1]
         end_date = datetime(end.year, end.month, day, 23, 59, 59)
-        past_date = end_date - relativedelta(months=int(wizard_data.avg_period))
+        past_date = end_date - relativedelta(months=(int(wizard_data.avg_period) - 1))
         start_date = datetime(past_date.year, past_date.month, 1)
 
         sale_records = self.env['sale.order.line'].search([
@@ -136,9 +136,12 @@ class SaleForecast(models.AbstractModel):
         row += 1
 
         prod_list = []
-        for order in sale_records:
-            if order.product_id.id not in prod_list:
-                prod_list.append(order.product_id.id)
+        if wizard_data.product_ids:
+            prod_list = wizard_data.product_ids.ids
+        else:
+            for order in sale_records:
+                if order.product_id.id not in prod_list:
+                    prod_list.append(order.product_id.id)
 
         for prod in prod_list:
             purchase_qty = self.env['purchase.order.line'].search([
@@ -155,7 +158,6 @@ class SaleForecast(models.AbstractModel):
             count = 0
             for sale in sale_qty:
                 if sale.qty_invoiced:
-                    # print(22222222222222222222222222222222222222222222222222222222222222222, sale.order_id, sale.qty_invoiced)
                     count += 1
                     sale_quant += sale.qty_invoiced
             pur_qty = 0.0
@@ -176,10 +178,6 @@ class SaleForecast(models.AbstractModel):
             total = product_rec.virtual_available + pur_qty
             average = sale_quant/int(wizard_data.avg_period)
             new_value = total - average
-
-            # print(111111111111111111111111111111111111111111111, product_rec.name, start_date, end_date, sale_quant, int(wizard_data.avg_period), average, count)
-
-            # print(2222222222222222222222222222222222222222222, product_rec.name, product_rec.virtual_available, pur_qty, sale_quant, total, count)
 
             worksheet.write_string(row, col, product_rec.name or '', format_data_left)
             worksheet.write_string(row, col+1, product_rec.categ_id.name or '', format_data_left)

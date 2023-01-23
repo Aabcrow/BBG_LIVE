@@ -13,6 +13,7 @@ class SaleForecasting(models.TransientModel):
         ('5', '5 Month'),
         ('6', '6 Month'),
     ], 'Average Period', default='3')
+    product_ids = fields.Many2many('product.product', string="Products")
 
     file = fields.Binary('Download Report')
     name = fields.Char()
