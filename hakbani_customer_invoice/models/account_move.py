@@ -37,3 +37,4 @@ class AccountMove(models.Model):
 	_inherit = "account.move"
 
 	invoice_payment_type = fields.Selection([('cash', 'نقدى'), ('credit', 'أجل')], string='نوع الفاتورة', default='cash', required=True)
+
