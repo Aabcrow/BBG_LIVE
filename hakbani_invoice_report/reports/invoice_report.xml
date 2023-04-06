@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div t-attf-class="article"
-                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8')}}); background-size:240mm 222mm; width:240mm; height:222mm;"
+                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8')}}); background-size:195mm 222mm; width:195mm; height:222mm;"
                  t-att-data-oe-model="o and o._name"
                  t-att-data-oe-id="o and o.id"
                  t-att-data-oe-lang="o and o.env.context.get('lang')">
@@ -89,7 +89,7 @@
                                         <span>053 9090 658 <span>خدمة العملاء</span></span>
                                     </div>
                                 </div>
-                                <div class="row" style="margin-top:20px;">
+                                <div class="row" style="margin-top:20px;direction: ltr;">
                                     <div class="col-6">
                                         <table width="100%" style="font-size:10pt;font-family:Myriad-Regular;font-weight: bold;">
                                             <tr>
@@ -109,12 +109,17 @@
                                             </tr>
                                             <tr style="border-top:1px solid #961B29;">
                                                 <b><td style="text-align:left;font-weight: bold;">Source</td></b>
-                                                <b><td style="text-align:center;"><span t-field="o.payment_reference"/></td></b>
+                                                <b><td style="text-align:center;"><span t-field="o.invoice_origin"/></td></b>
                                                 <b><td style="text-align:right;font-family:Droid-Regular;">رقم المرجع</td></b>
+                                            </tr>
+                                            <tr>
+                                                <b><td style="text-align:left;font-weight: bold;">Invoice Type</td></b>
+                                                <b><td style="text-align:center;"><span t-field="o.invoice_payment_type"/></td></b>
+                                                <b><td style="text-align:right;font-family:Droid-Regular;">نوع الفاتورة</td></b>
                                             </tr>
                                         </table>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-6" style="direction: rtl;">
                                         <address style="font-size:10pt;font-family:Droid-Regular;text-align:right;font-weight: bold;" t-field="o.partner_id"
                                                  t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                                     </div>

@@ -7,7 +7,7 @@
     "author": "Hakbani IT",
     'website': 'https://www.nutechits.com',
     "license": "AGPL-3",
-    "depends": ["account", "l10n_sa_invoice"],
+    "depends": ["account", "l10n_sa_invoice", "hakbani_customer_invoice"],
     "data": [
         "reports/invoice_report.xml",
         "reports/records.xml",
