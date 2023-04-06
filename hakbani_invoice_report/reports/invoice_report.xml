@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div t-attf-class="article"
-                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8')}}); background-size:195mm 222mm; width:195mm; height:222mm;"
+                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8')}}); background-size:240mm 222mm; width:240mm; height:222mm;"
                  t-att-data-oe-model="o and o._name"
                  t-att-data-oe-id="o and o.id"
                  t-att-data-oe-lang="o and o.env.context.get('lang')">
