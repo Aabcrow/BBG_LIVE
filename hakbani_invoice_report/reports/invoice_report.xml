@@ -140,7 +140,7 @@
                                         <b>
                                             <span style="font-size:12pt;font-family:Droid-Regular;text-align:right;font-color:#000000;">رقم تسجيل ضريبة القيمة المضافة للعميل</span>
                                             <br/>
-                                            <span style="font-size:12pt;font-family:Myriad-Regular;text-align:right;font-color:#961B29;color:#961B29;padding-right:40px;">3111776244800003</span>
+                                            <span style="font-size:12pt;font-family:Myriad-Regular;text-align:right;font-color:#961B29;color:#961B29;padding-right:40px;" t-field="o.partner_id.vat"/>
                                         </b>
                                     </div>
                                 </div>
