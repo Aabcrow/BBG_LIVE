@@ -74,19 +74,19 @@
                                              style="display:block;text-align:center;"
                                              t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 120, 120)"/>
                                     </div>
-                                    <div class="col-5" style="font-size:11pt;font-family:Myriad-Regular;font-weight: bold;color:#961B29;">
+                                    <div class="col-5" style="font-size:11pt;font-family:Myriad-Regular;font-weight: bold;color:#961B29;float:left;" dir="ltr">
                                         <span>Main center - Riyadh City</span><br/>
                                         <span>PO Box 390807 Riyadh 11365</span><br/>
                                         <span>Telefax +966 11 242 7855</span><br/>
                                         <span>malbalwi@bbg.com.sa</span><br/>
                                         <span>Customer Service: 053 9090 658</span>
                                     </div>
-                                    <div class="col-4" style="font-size:11pt;text-align:right;font-family:Droid-Regular;font-weight: bold;color:#961B29;">
+                                    <div class="col-4" style="font-size:11pt;text-align:right;font-family:Droid-Regular;font-weight: bold;color:#961B29;float:right;" dir="ltr">
                                         <span>المركز الرئيسي - الرياض</span><br/>
                                         <span>ص ب 390807 الرياض 11365</span><br/>
-                                        <span>+966 11 242 7855 <span>تليفاكس</span></span><br/>
+                                        <span>+966 11 242 7855</span><![CDATA[ &nbsp; ]]><span>تليفاكس</span><br/>
                                         <span>المملكة العربية السعودية</span><br/>
-                                        <span>053 9090 658 <span>خدمة العملاء</span></span>
+                                        <span>053 9090 658</span><![CDATA[ &nbsp; ]]><span>خدمة العملاء</span>
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top:20px;direction: ltr;">
