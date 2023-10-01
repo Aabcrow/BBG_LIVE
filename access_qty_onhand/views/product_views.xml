@@ -67,14 +67,14 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_kanban_view"/>
         <field name="arch" type="xml">
-<!--            This code for my local-->
-            <div t-if="record.type.raw_value == 'product'" position="attributes">
-                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>
-            </div>
-<!--&lt;!&ndash;            This code for odoo.sh&ndash;&gt;-->
-<!--            <div t-if="record.show_on_hand_qty_status_button.raw_value" position="attributes">-->
+<!--&lt;!&ndash;            This code for my local&ndash;&gt;-->
+<!--            <div t-if="record.type.raw_value == 'product'" position="attributes">-->
 <!--                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>-->
 <!--            </div>-->
+<!--            This code for odoo.sh-->
+            <div t-if="record.show_on_hand_qty_status_button.raw_value" position="attributes">
+                <attribute name="groups">access_qty_onhand.group_access_on_hand_qty</attribute>
+            </div>
         </field>
     </record>
 
