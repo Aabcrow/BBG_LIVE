@@ -13,7 +13,7 @@ class ProductMarginXlsx(models.AbstractModel):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'font_size': '13',
+            'font_size': '11',
             "font_color": 'black',
             "bg_color": '#F7DC6F',
             'font_name': 'Metropolis',
@@ -22,7 +22,7 @@ class ProductMarginXlsx(models.AbstractModel):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'font_size': '13',
+            'font_size': '11',
             "font_color": 'black',
             "bg_color": '#73C6B6',
             'font_name': 'Metropolis',
@@ -31,7 +31,7 @@ class ProductMarginXlsx(models.AbstractModel):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'font_size': '13',
+            'font_size': '11',
             "font_color": 'black',
             "bg_color": '#EB984E',
             'font_name': 'Metropolis',
@@ -40,7 +40,7 @@ class ProductMarginXlsx(models.AbstractModel):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'font_size': '13',
+            'font_size': '11',
             "font_color": 'black',
             "bg_color": '#B2F776',
             'font_name': 'Metropolis',
@@ -49,7 +49,7 @@ class ProductMarginXlsx(models.AbstractModel):
             'bold': 1,
             'align': 'left',
             'valign': 'vcenter',
-            'font_size': '13',
+            'font_size': '11',
             "font_color": 'black',
             "bg_color": '#E9ECE7',
             'font_name': 'Metropolis',
@@ -69,7 +69,7 @@ class ProductMarginXlsx(models.AbstractModel):
             "align": 'right',
             "valign": 'vcenter',
             "font_color": 'black',
-            'font_size': '13',
+            'font_size': '11',
             'font_name': 'Metropolis',
             "num_format": "#,##0.00",
         })
@@ -78,7 +78,7 @@ class ProductMarginXlsx(models.AbstractModel):
             "align": 'left',
             "valign": 'vcenter',
             "font_color": 'black',
-            'font_size': '13',
+            'font_size': '11',
             'font_name': 'Metropolis',
             "num_format": "#,##0.00",
         })
@@ -129,7 +129,7 @@ class ProductMarginXlsx(models.AbstractModel):
 
         # Calculate average margin and margin percentage for each product
         for product_id, data in product_data.items():
-            if data['margin_count'] > 0:
+            if data['margin_count'] > 0 and data['total_sale'] > 0:
                 data['avg_margin'] = data['total_margin'] / data['margin_count']
                 data['margin_percentage'] = (data['total_margin'] / data['total_sale']) * 100
             else:
