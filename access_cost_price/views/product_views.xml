@@ -13,16 +13,5 @@
         </field>
     </record>
 
-    <record id="view_stock_product_product_tree_inherit" model="ir.ui.view">
-        <field name="name">product.product.tree.inherit</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view"/>
-        <field name="arch" type="xml">
-            <field name="standard_price" position="attributes">
-                <attribute name="groups">access_cost_price.group_cost_price</attribute>
-            </field>
-        </field>
-    </record>
-
 
 </odoo>

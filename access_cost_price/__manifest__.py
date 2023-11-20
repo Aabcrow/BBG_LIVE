@@ -8,11 +8,13 @@
     'depends': [
         'product',
         'sale',
+        'sale_margin',
     ],
     'data': [
         # 'data/data.xml',
         'security/security.xml',
         'views/product_views.xml',
+        'views/sale_order_views.xml',
     ],
     'installable': True,
     'auto_install': False,

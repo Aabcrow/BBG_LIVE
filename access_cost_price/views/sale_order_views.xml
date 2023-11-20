@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Views -->
+
+    <record id="sale_order_inherit_views" model="ir.ui.view">
+        <field name="name">sale_order_inherit_views</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line"/>
+        <field name="arch" type="xml">
+            <field name="purchase_price" position="attributes">
+                <attribute name="groups">access_cost_price.group_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>
