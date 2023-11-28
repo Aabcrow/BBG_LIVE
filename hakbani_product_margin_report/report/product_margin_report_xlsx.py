@@ -13,7 +13,7 @@ class ProductMarginXlsx(models.AbstractModel):
             'bold': 1,
             'align': 'center',
             'valign': 'vcenter',
-            'font_size': '11',
+            'font_size': '13',
             "font_color": 'black',
             "bg_color": '#F7DC6F',
             'font_name': 'Metropolis',
@@ -61,7 +61,7 @@ class ProductMarginXlsx(models.AbstractModel):
             "valign": 'vcenter',
             "font_color": 'black',
             "bg_color": '#F7DC6F',
-            'font_size': '15',
+            'font_size': '12',
             'font_name': 'Metropolis',
         })
         format_data_right = workbook.add_format({
@@ -114,12 +114,14 @@ class ProductMarginXlsx(models.AbstractModel):
                     'sale_price': line.product_id.list_price,
                     'cost': line.product_id.standard_price,
                     'total_sale': 0.0,
+                    'total_qty_sold': 0.0,
                     'total_margin': 0.0,
                     'margin_count': 0,
                 }
 
             # Update total sale for the product
             product_data[product_id]['total_sale'] += line.price_subtotal
+            product_data[product_id]['total_qty_sold'] += line.product_uom_qty
 
             # Calculate and update margin for the product
 
@@ -137,7 +139,7 @@ class ProductMarginXlsx(models.AbstractModel):
                 data['margin_percentage'] = 0.0
 
         # Add headers to the worksheet
-        headers = ['Product Name', 'Category', 'Quantity On Hand','Sales Price', 'Cost', 'Total Sale', 'Total Margin', 'Avg Margin', 'Margin %']
+        headers = ['Product Name', 'Category', 'Quantity On Hand','Sales Price', 'Cost', 'Total Sale','Total Qty Sold', 'Total Margin', 'Avg Margin', 'Margin %']
         for col_num, header in enumerate(headers):
             worksheet.write(4, col_num, header, format_data_header)
 
@@ -149,6 +151,7 @@ class ProductMarginXlsx(models.AbstractModel):
             worksheet.write(row_num, 3, data['sale_price'], main_product_format)
             worksheet.write(row_num, 4, data['cost'], main_product_format)
             worksheet.write(row_num, 5, data['total_sale'], main_product_format)
-            worksheet.write(row_num, 6, data['total_margin'], main_product_format)
-            worksheet.write(row_num, 7, data['avg_margin'], main_product_format)
-            worksheet.write(row_num, 8, data['margin_percentage'], main_product_format)
+            worksheet.write(row_num, 6, data['total_qty_sold'], main_product_format)
+            worksheet.write(row_num, 7, str('%.2f' % data['total_margin']), main_product_format)
+            worksheet.write(row_num, 8, str('%.2f' % data['avg_margin']), main_product_format)
+            worksheet.write(row_num, 9, str('%.2f' % data['margin_percentage']), main_product_format)
