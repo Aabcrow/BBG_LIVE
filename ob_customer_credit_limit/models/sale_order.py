@@ -17,7 +17,7 @@ class SaleOrder(models.Model):
         due is greater than blocking limit of the partner.
         '''
         partner_id = self.partner_id
-        total_amount = self.amount_due
+        total_amount = self.amount_due + self.amount_total
         if partner_id.credit_check:
             existing_move = self.env['account.move'].search(
                 [('partner_id', '=', self.partner_id.id), ('state', '=', 'posted')])
