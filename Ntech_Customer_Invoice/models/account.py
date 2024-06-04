@@ -33,13 +33,13 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from odoo.tools.misc import format_date
 
 
-class account_move(models.Model):
+class AccountMove(models.Model):
     _inherit = "account.move"
 
     def _post(self, soft=True):
         if self.env.user.user_has_groups('Ntech_Customer_Invoice.group_account_invoice_personal'):
-            return super().sudo()._post()
-        return super()._post()
+            return super(AccountMove, self.sudo())._post(soft=soft)
+        return super(AccountMove, self)._post(soft=soft)
 
     # def _post(self, soft=True):
     #     """Post/Validate the documents.
