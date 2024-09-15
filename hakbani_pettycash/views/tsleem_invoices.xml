@@ -125,8 +125,10 @@
             </p>
         </field>
     </record>
-    <menuitem id="tsleem_invoices_menu" parent="account_accountant.menu_accounting"
-              name="Petty Cash" groups="hakbani_pettycash.manager,hakbani_pettycash.user,hakbani_pettycash.submit,hakbani_pettycash.approval,,hakbani_pettycash.postal"/>
+    <menuitem id="tsleem_invoices_menu"
+              web_icon="hakbani_pettycash,static/description/icon2.png"
+              name="Petty Cash"
+              groups="hakbani_pettycash.manager,hakbani_pettycash.user,hakbani_pettycash.submit,hakbani_pettycash.approval,,hakbani_pettycash.postal"/>
     <menuitem id="tsleem_invoices_sub_menu" parent="tsleem_invoices_menu" action="tsleem_invoices_action"
               name="Petty Cash"/>
 

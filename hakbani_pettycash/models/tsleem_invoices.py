@@ -135,7 +135,7 @@ class TsleemInvoicesLine(models.Model):
     # tax_supplier_id = fields.Many2one('res.partner',string="Tax Number", required=True,  compute='_compute_tax_supplier_id',store=True)
     ref = fields.Char(string="Bill Reference", required=True)
     # construction_id = fields.Many2one('construction.module',string="Construction", required=True)
-    product_id = fields.Many2one('product.template', string="Product", required=True,
+    product_id = fields.Many2one('product.product', string="Product", required=True,
                                  domain=[('is_petty_cash', '=', True)])
     ref_product = fields.Char(string="Ref Product", required=True, compute='_compute_ref_product', store=True)
     date_invoice = fields.Date(string='Bill Date', required=True)
@@ -243,13 +243,13 @@ class TsleemInvoicesLine(models.Model):
                     'payment_type': 'outbound',
                     'partner_type': 'supplier',
                     'partner_id': self.supplier_id.id,
-                    'payment_date': self.date_invoice,
+                    'date': self.date_invoice,
                     'amount': invoice_id.amount_total,
                     'journal_id': self.tsleem_invoices_id.journal_id.id,
                     'payment_method_id': self.env['account.payment.method'].search([], limit=1).id,
-                    'invoice_ids' : invoice_id.ids
+                    'invoice_vendor_bill_id' : invoice_id.id
                 })
-            payment_id.post()
+            payment_id.action_post()
             self.payment_id = payment_id.id
         else:
             if self.payment_id.state == 'posted':
